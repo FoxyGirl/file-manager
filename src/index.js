@@ -1,19 +1,38 @@
-const vars = process.env;
+import * as readline from "node:readline/promises";
+import { homedir } from "os";
 
-const result = Object.entries(vars);
-// const userName = result.find((item) => item[0] === "username");
+import { mainState } from "./mainState.js";
+import { output, getArgValue } from "./utils/index.js";
 
-const getArgValue = (arg) => {
-  const result = arg.split("=");
-  return result[1];
-};
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.prompt();
+
+// const vars = process.env;
+// const result = Object.entries(vars);
+
+const homeDir = homedir();
+mainState.setDirName(homeDir);
 
 const USERNAME_ARG = "--username";
 const outArgs = process.argv;
-const userArg = outArgs.find((item) => item.includes(USERNAME_ARG));
-const userName = userArg ? getArgValue(userArg) : "Anonymous";
 
-// console.log("Hello result = ", result);
-const greeting = `Welcome to the File Manager, ${userName}!`;
-console.log(greeting);
-process.stdin;
+const userArg = outArgs.find((item) => item.startsWith(USERNAME_ARG));
+
+if (userArg) {
+  mainState.setUserName(getArgValue(userArg));
+}
+
+output(mainState.getGreeting());
+output(mainState.getDirNameInfo());
+
+rl.on("line", (data) => {
+  if (data === ".exit") {
+    output(mainState.sayGoodBye());
+
+    rl.close();
+  }
+});

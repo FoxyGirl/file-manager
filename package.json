@@ -4,12 +4,13 @@
   "description": "file manager with nodejs",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node --trace-warnings src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "nodejs"
   ],
+  "type": "module",
   "author": "Elena Pavlova",
   "license": "ISC"
 }
