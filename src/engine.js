@@ -2,7 +2,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 
 import { errorHandler } from "./errorHandler.js";
-import { output } from "./utils/index.js";
+import { output, validateArgs } from "./utils/index.js";
 
 export class Engine {
   constructor(state) {
@@ -17,14 +17,17 @@ export class Engine {
 
     switch (action) {
       case "up": {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.operationError();
+          break;
+        }
         const newDirName = path.resolve(this.state.dirName, "..");
         this.state.setDirName(newDirName);
         break;
       }
       case "cd": {
         // TEST: /home/foxygirl/workspace
-        // TODO: validation util
-        if (actionArgs.length !== 1) {
+        if (!validateArgs(action, actionArgs)) {
           this.errorHandler.operationError();
           break;
         }
