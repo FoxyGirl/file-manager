@@ -1,5 +1,6 @@
 import * as readline from "node:readline/promises";
-import { homedir } from "os";
+import { homedir } from "node:os";
+import * as path from "node:path";
 
 import { mainState } from "./mainState.js";
 import { output, getArgValue } from "./utils/index.js";
@@ -33,17 +34,28 @@ class App {
     rl.prompt();
 
     rl.on("line", (data) => {
+      let isEndOfWork = false;
+
       switch (data) {
+        case "up": {
+          const newDirName = path.resolve(this.state.dirName, "..");
+          this.state.setDirName(newDirName);
+          break;
+        }
         case ".exit": {
           output(this.state.sayGoodBye());
 
           rl.close();
+          isEndOfWork = true;
           break;
         }
         default: {
           output("Invalid input");
-          output(this.state.getDirNameInfo());
         }
+      }
+
+      if (!isEndOfWork) {
+        output(this.state.getDirNameInfo());
       }
     });
   }
