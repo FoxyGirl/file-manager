@@ -3,11 +3,13 @@ import { homedir } from "node:os";
 import * as path from "node:path";
 
 import { mainState } from "./mainState.js";
+import { errorHandler } from "./errorHandler.js";
 import { output, getArgValue } from "./utils/index.js";
 
 class App {
   constructor() {
     this.state = mainState;
+    this.errorHandler = errorHandler;
   }
 
   init() {
@@ -50,7 +52,7 @@ class App {
           break;
         }
         default: {
-          output("Invalid input");
+          this.errorHandler.inputError();
         }
       }
 
