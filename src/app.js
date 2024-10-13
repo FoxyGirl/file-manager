@@ -60,6 +60,10 @@ class App {
         output(this.state.getDirNameInfo());
       }
     });
+
+    rl.on("close", () => {
+      output(this.state.sayGoodBye());
+    });
   }
 }
 
