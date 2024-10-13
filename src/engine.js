@@ -1,7 +1,8 @@
-import * as path from "node:path";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 import { errorHandler } from "./errorHandler.js";
-import { output, getArgValue } from "./utils/index.js";
+import { output } from "./utils/index.js";
 
 export class Engine {
   constructor(state) {
@@ -9,11 +10,30 @@ export class Engine {
     this.errorHandler = errorHandler;
   }
 
-  run(data) {
-    switch (data) {
+  async handleAction(data) {
+    const [action, ...actionArgs] = data.trim().split(" ");
+    console.log(">>>> action", action);
+    console.log(">>>> actionArgs", actionArgs);
+
+    switch (action) {
       case "up": {
         const newDirName = path.resolve(this.state.dirName, "..");
         this.state.setDirName(newDirName);
+        break;
+      }
+      case "cd": {
+        // TEST: /home/foxygirl/workspace
+        // TODO: validation util
+        if (actionArgs.length !== 1) {
+          this.errorHandler.operationError();
+          break;
+        }
+        const pathStr = actionArgs[0];
+
+        const newPath = path.resolve(this.state.dirName, pathStr);
+        await fs.access(newPath);
+        this.state.setDirName(newPath);
+
         break;
       }
       default: {
@@ -22,5 +42,15 @@ export class Engine {
     }
 
     output(this.state.getDirNameInfo());
+  }
+
+  async run(data) {
+    try {
+      await this.handleAction(data);
+    } catch (err) {
+      //   console.error(err.message);
+      this.errorHandler.operationError();
+      output(this.state.getDirNameInfo());
+    }
   }
 }
