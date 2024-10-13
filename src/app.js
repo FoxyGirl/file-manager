@@ -1,15 +1,22 @@
 import * as readline from "node:readline/promises";
 import { homedir } from "node:os";
-import * as path from "node:path";
 
 import { mainState } from "./mainState.js";
 import { errorHandler } from "./errorHandler.js";
+import { Engine } from "./engine.js";
 import { output, getArgValue } from "./utils/index.js";
 
 class App {
   constructor() {
     this.state = mainState;
     this.errorHandler = errorHandler;
+
+    this.readline = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    this.engine = new Engine(this.state);
   }
 
   init() {
@@ -28,40 +35,17 @@ class App {
     output(this.state.getGreeting());
     output(this.state.getDirNameInfo());
 
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
+    this.readline.prompt();
 
-    rl.prompt();
-
-    rl.on("line", (data) => {
-      let isEndOfWork = false;
-
-      switch (data) {
-        case "up": {
-          const newDirName = path.resolve(this.state.dirName, "..");
-          this.state.setDirName(newDirName);
-          break;
-        }
-        case ".exit": {
-          output(this.state.sayGoodBye());
-
-          rl.close();
-          isEndOfWork = true;
-          break;
-        }
-        default: {
-          this.errorHandler.inputError();
-        }
-      }
-
-      if (!isEndOfWork) {
-        output(this.state.getDirNameInfo());
+    this.readline.on("line", (data) => {
+      if (data === ".exit") {
+        this.readline.close();
+      } else {
+        this.engine.run(data);
       }
     });
 
-    rl.on("close", () => {
+    this.readline.on("close", () => {
       output(this.state.sayGoodBye());
     });
   }
