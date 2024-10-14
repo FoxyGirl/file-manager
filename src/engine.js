@@ -5,6 +5,7 @@ import { errorHandler } from "./errorHandler.js";
 import { output, validateArgs } from "./utils/index.js";
 import { osHandler } from "./helpers/os.js";
 import { calculateHash } from "./helpers/calculateHash.js";
+import { list } from "./helpers/list.js";
 import { ACTIONS } from "./constants.js";
 
 export class Engine {
@@ -46,9 +47,8 @@ export class Engine {
           this.errorHandler.inputError();
           break;
         }
-        const files = await fs.readdir(this.state.dirName);
-        // TODO: refactor output as a table
-        output(files.join(" ||  \n"));
+
+        await list(this.state.dirName);
 
         break;
       }
