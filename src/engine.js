@@ -7,6 +7,7 @@ import { osHandler } from "./helpers/os.js";
 import { calculateHash } from "./helpers/calculateHash.js";
 import { list } from "./helpers/list.js";
 import { readFile } from "./helpers/readFile.js";
+import { copyFile } from "./helpers/copyFile.js";
 import { ACTIONS } from "./constants.js";
 
 export class Engine {
@@ -70,6 +71,18 @@ export class Engine {
 
         await readFile(sourcePath).then((data) => output(data));
         break;
+      }
+
+      case ACTIONS.CP: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+
+        const [sourcePath, destinationPath] = actionArgs;
+
+        await fs.access(sourcePath);
+        await copyFile(sourcePath, destinationPath);
       }
 
       case ACTIONS.RM: {

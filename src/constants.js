@@ -6,6 +6,7 @@ export const ACTIONS = {
   RM: "rm",
   ADD: "add",
   RN: "rn",
+  CP: "cp",
   OS: "os",
   HASH: "hash",
 };
