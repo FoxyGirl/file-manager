@@ -11,7 +11,9 @@ export const validateArgs = (action, actionArgs) => {
       }
       break;
     }
-    case ACTIONS.CD: {
+    case ACTIONS.CD:
+    case ACTIONS.CAT:
+    case ACTIONS.RM: {
       if (actionArgs.length === 1 && !!actionArgs[0]) {
         isValid = true;
       }

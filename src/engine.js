@@ -50,6 +50,23 @@ export class Engine {
 
         break;
       }
+      case ACTIONS.RM: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+        const pathStr = actionArgs[0];
+
+        const newPath = pathStr.startsWith("/")
+          ? path.resolve(pathStr)
+          : path.resolve(this.state.dirName, pathStr);
+
+        await fs.access(newPath);
+        await fs.rm(newPath);
+        // TEST zdelete.txt
+        // TEST /home/foxygirl/zdelete.txt
+        break;
+      }
       default: {
         this.errorHandler.inputError();
       }
