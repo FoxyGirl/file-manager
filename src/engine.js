@@ -6,6 +6,7 @@ import { output, validateArgs } from "./utils/index.js";
 import { osHandler } from "./helpers/os.js";
 import { calculateHash } from "./helpers/calculateHash.js";
 import { list } from "./helpers/list.js";
+import { readFile } from "./helpers/readFile.js";
 import { ACTIONS } from "./constants.js";
 
 export class Engine {
@@ -29,6 +30,7 @@ export class Engine {
         this.state.setDirName(newDirName);
         break;
       }
+
       case ACTIONS.CD: {
         // TEST: /home/foxygirl/workspace
         if (!validateArgs(action, actionArgs)) {
@@ -42,6 +44,7 @@ export class Engine {
         this.state.setDirName(newPath);
         break;
       }
+
       case ACTIONS.LIST: {
         if (!validateArgs(action, actionArgs)) {
           this.errorHandler.inputError();
@@ -52,6 +55,23 @@ export class Engine {
 
         break;
       }
+
+      case ACTIONS.CAT: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+
+        const pathStr = actionArgs[0];
+
+        const sourcePath = pathStr.startsWith("/")
+          ? path.resolve(pathStr)
+          : path.resolve(this.state.dirName, pathStr);
+
+        await readFile(sourcePath).then((data) => output(data));
+        break;
+      }
+
       case ACTIONS.RM: {
         if (!validateArgs(action, actionArgs)) {
           this.errorHandler.inputError();
@@ -69,6 +89,7 @@ export class Engine {
         // TEST /home/foxygirl/zdelete.txt
         break;
       }
+
       case ACTIONS.ADD: {
         if (!validateArgs(action, actionArgs)) {
           this.errorHandler.inputError();
@@ -81,6 +102,7 @@ export class Engine {
         // TEST 111.txt
         break;
       }
+
       case ACTIONS.RN: {
         if (!validateArgs(action, actionArgs)) {
           this.errorHandler.inputError();
@@ -94,6 +116,7 @@ export class Engine {
         await fs.rename(sourcePath, newPath);
         break;
       }
+
       case ACTIONS.HASH: {
         if (!validateArgs(action, actionArgs)) {
           this.errorHandler.inputError();
@@ -113,6 +136,7 @@ export class Engine {
           });
         break;
       }
+
       case ACTIONS.OS: {
         if (!validateArgs(action, actionArgs)) {
           this.errorHandler.inputError();
@@ -125,6 +149,7 @@ export class Engine {
         }
         break;
       }
+
       default: {
         this.errorHandler.inputError();
       }
