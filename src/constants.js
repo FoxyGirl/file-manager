@@ -4,5 +4,6 @@ export const ACTIONS = {
   LIST: "list",
   CAT: "cat",
   RM: "rm",
+  ADD: "add",
   OS: "os",
 };

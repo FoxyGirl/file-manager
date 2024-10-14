@@ -68,6 +68,18 @@ export class Engine {
         // TEST /home/foxygirl/zdelete.txt
         break;
       }
+      case ACTIONS.ADD: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+        const pathStr = actionArgs[0];
+        const newPath = path.resolve(this.state.dirName, pathStr);
+
+        await fs.writeFile(newPath, "", { flag: "wx" });
+        // TEST 111.txt
+        break;
+      }
       case ACTIONS.OS: {
         if (!validateArgs(action, actionArgs)) {
           this.errorHandler.inputError();
