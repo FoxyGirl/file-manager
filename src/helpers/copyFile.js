@@ -1,14 +1,14 @@
 import path from "node:path";
-import { stat } from "node:fs/promises";
 import { createReadStream, createWriteStream } from "node:fs";
 
 export const copyFile = async (sourcePath, destinationPath) => {
   let destinationPathToFile = destinationPath;
-  const stats = await stat(destinationPath);
 
-  if (stats.isDirectory()) {
+  const isPathWithoutFileName = destinationPath.endsWith(path.sep);
+
+  if (isPathWithoutFileName) {
     const fileName = path.basename(sourcePath);
-    destinationPathToFile = path.resolve(destinationPathToFile, fileName);
+    destinationPathToFile = path.resolve(destinationPath, fileName);
   }
 
   const readStream = createReadStream(sourcePath);

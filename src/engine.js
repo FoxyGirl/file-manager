@@ -82,9 +82,27 @@ export class Engine {
         const [sourcePath, destinationPath] = actionArgs;
 
         await fs.access(sourcePath);
-        // TEST: cp /home/foxygirl/zz.txt /home/foxygirl/workspace
+        // TEST: cp /home/foxygirl/zz.txt /home/foxygirl/workspace/
 
         await copyFile(sourcePath, destinationPath);
+        break;
+      }
+
+      case ACTIONS.MV: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+
+        const [sourcePath, destinationPath] = actionArgs;
+
+        await fs.access(sourcePath);
+        // TEST: mv /home/foxygirl/zz.txt /home/foxygirl/workspace/
+        // TEST: mv /home/foxygirl/zz.txt /home/foxygirl/workspace/22.txt
+
+        await copyFile(sourcePath, destinationPath);
+        await fs.rm(sourcePath);
+        break;
       }
 
       case ACTIONS.RM: {
@@ -177,7 +195,7 @@ export class Engine {
     try {
       await this.handleAction(data);
     } catch (err) {
-      //   console.error(err.message);
+      console.error(err.message);
       this.errorHandler.operationError();
       output(this.state.getDirNameInfo());
     }
