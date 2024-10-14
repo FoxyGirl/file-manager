@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 
 import { errorHandler } from "./errorHandler.js";
 import { output, validateArgs } from "./utils/index.js";
+import { osHandler } from "./os.js";
 import { ACTIONS } from "./constants.js";
 
 export class Engine {
@@ -65,6 +66,18 @@ export class Engine {
         await fs.rm(newPath);
         // TEST zdelete.txt
         // TEST /home/foxygirl/zdelete.txt
+        break;
+      }
+      case ACTIONS.OS: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+
+        const result = osHandler(actionArgs[0]);
+        if (result) {
+          output(result);
+        }
         break;
       }
       default: {
