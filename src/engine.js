@@ -3,7 +3,8 @@ import fs from "node:fs/promises";
 
 import { errorHandler } from "./errorHandler.js";
 import { output, validateArgs } from "./utils/index.js";
-import { osHandler } from "./os.js";
+import { osHandler } from "./helpers/os.js";
+import { calculateHash } from "./helpers/calculateHash.js";
 import { ACTIONS } from "./constants.js";
 
 export class Engine {
@@ -91,6 +92,25 @@ export class Engine {
 
         await fs.access(sourcePath);
         await fs.rename(sourcePath, newPath);
+        break;
+      }
+      case ACTIONS.HASH: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+        const pathStr = actionArgs[0];
+
+        const sourcePath = pathStr.startsWith("/")
+          ? path.resolve(pathStr)
+          : path.resolve(this.state.dirName, pathStr);
+
+        await fs.access(sourcePath);
+        await calculateHash(sourcePath)
+          .then((hash) => output(hash))
+          .catch((err) => {
+            throw new Error(err.message);
+          });
         break;
       }
       case ACTIONS.OS: {

@@ -1,5 +1,5 @@
 import os from "node:os";
-import { errorHandler } from "./errorHandler.js";
+import { errorHandler } from "../errorHandler.js";
 
 export const osHandler = (argument) => {
   let result = "";

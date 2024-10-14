@@ -15,6 +15,7 @@ export const validateArgs = (action, actionArgs) => {
     case ACTIONS.CAT:
     case ACTIONS.RM:
     case ACTIONS.ADD:
+    case ACTIONS.HASH:
     case ACTIONS.OS: {
       if (actionArgs.length === 1 && !!actionArgs[0]) {
         isValid = true;
