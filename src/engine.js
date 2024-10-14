@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 
 import { errorHandler } from "./errorHandler.js";
 import { output, validateArgs } from "./utils/index.js";
+import { ACTIONS } from "./constants.js";
 
 export class Engine {
   constructor(state) {
@@ -16,19 +17,19 @@ export class Engine {
     console.log(">>>> actionArgs", actionArgs);
 
     switch (action) {
-      case "up": {
+      case ACTIONS.UP: {
         if (!validateArgs(action, actionArgs)) {
-          this.errorHandler.operationError();
+          this.errorHandler.inputError();
           break;
         }
         const newDirName = path.resolve(this.state.dirName, "..");
         this.state.setDirName(newDirName);
         break;
       }
-      case "cd": {
+      case ACTIONS.CD: {
         // TEST: /home/foxygirl/workspace
         if (!validateArgs(action, actionArgs)) {
-          this.errorHandler.operationError();
+          this.errorHandler.inputError();
           break;
         }
         const pathStr = actionArgs[0];
@@ -36,6 +37,16 @@ export class Engine {
         const newPath = path.resolve(this.state.dirName, pathStr);
         await fs.access(newPath);
         this.state.setDirName(newPath);
+        break;
+      }
+      case ACTIONS.LIST: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+        const files = await fs.readdir(this.state.dirName);
+        // TODO: refactor output as a table
+        output(files.join(" ||  \n"));
 
         break;
       }

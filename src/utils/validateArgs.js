@@ -1,14 +1,17 @@
+import { ACTIONS } from "../constants.js";
+
 export const validateArgs = (action, actionArgs) => {
   let isValid = false;
 
   switch (action) {
-    case "up": {
+    case ACTIONS.UP:
+    case ACTIONS.LIST: {
       if (!actionArgs.length) {
         isValid = true;
       }
       break;
     }
-    case "cd": {
+    case ACTIONS.CD: {
       if (actionArgs.length === 1 && !!actionArgs[0]) {
         isValid = true;
       }
@@ -20,7 +23,9 @@ export const validateArgs = (action, actionArgs) => {
     }
   }
 
-  //   console.error("=== isValid", isValid);
+  console.error("=== action", action);
+  console.error("=== actionArgs", actionArgs);
+  console.error("=== isValid", isValid);
 
   return isValid;
 };
