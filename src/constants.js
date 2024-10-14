@@ -10,4 +10,6 @@ export const ACTIONS = {
   MV: "mv",
   OS: "os",
   HASH: "hash",
+  COMPRESS: "compress",
+  DECOMPRESS: "decompress",
 };

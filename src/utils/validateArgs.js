@@ -23,6 +23,8 @@ export const validateArgs = (action, actionArgs) => {
       break;
     }
 
+    case ACTIONS.COMPRESS:
+    case ACTIONS.DECOMPRESS:
     case ACTIONS.RN:
     case ACTIONS.CP:
     case ACTIONS.MV: {

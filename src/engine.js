@@ -8,6 +8,7 @@ import { calculateHash } from "./helpers/calculateHash.js";
 import { list } from "./helpers/list.js";
 import { readFile } from "./helpers/readFile.js";
 import { copyFile } from "./helpers/copyFile.js";
+import { compressFile, decompressFile } from "./helpers/compressFile.js";
 import { ACTIONS } from "./constants.js";
 
 export class Engine {
@@ -180,6 +181,42 @@ export class Engine {
         if (result) {
           output(result);
         }
+        break;
+      }
+
+      case ACTIONS.COMPRESS: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+
+        const [sourcePath, destinationPath] = actionArgs;
+
+        await fs.access(sourcePath);
+        // TODO: handle compress without destination file name
+        // TEST: compress /home/foxygirl/yarn.lock /home/foxygirl/workspace/yarn.br
+
+        await compressFile(sourcePath, destinationPath);
+        const successMessage = `File compressed from ${sourcePath} to ${destinationPath} successfully!`;
+        output(successMessage);
+        break;
+      }
+
+      case ACTIONS.DECOMPRESS: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+
+        const [sourcePath, destinationPath] = actionArgs;
+
+        await fs.access(sourcePath);
+        // TODO: handle decompress without destination file name
+        // TEST: decompress /home/foxygirl/yarn.br /home/foxygirl/workspace/yarn.lock
+
+        await decompressFile(sourcePath, destinationPath);
+        const successMessage = `File decompressed from ${sourcePath} to ${destinationPath} successfully!`;
+        output(successMessage);
         break;
       }
 
