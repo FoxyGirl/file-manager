@@ -82,6 +82,8 @@ export class Engine {
         const [sourcePath, destinationPath] = actionArgs;
 
         await fs.access(sourcePath);
+        // TEST: cp /home/foxygirl/zz.txt /home/foxygirl/workspace
+
         await copyFile(sourcePath, destinationPath);
       }
 
