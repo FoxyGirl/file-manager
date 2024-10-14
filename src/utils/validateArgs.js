@@ -22,6 +22,12 @@ export const validateArgs = (action, actionArgs) => {
       break;
     }
 
+    case ACTIONS.RN: {
+      if (actionArgs.length === 2 && !!actionArgs[0] && !!actionArgs[1]) {
+        isValid = true;
+      }
+      break;
+    }
     default: {
       isValid = false;
     }

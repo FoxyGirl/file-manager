@@ -80,6 +80,19 @@ export class Engine {
         // TEST 111.txt
         break;
       }
+      case ACTIONS.RN: {
+        if (!validateArgs(action, actionArgs)) {
+          this.errorHandler.inputError();
+          break;
+        }
+        const [pathToFile, newPathToFile] = actionArgs;
+        const sourcePath = path.resolve(this.state.dirName, pathToFile);
+        const newPath = path.resolve(this.state.dirName, newPathToFile);
+
+        await fs.access(sourcePath);
+        await fs.rename(sourcePath, newPath);
+        break;
+      }
       case ACTIONS.OS: {
         if (!validateArgs(action, actionArgs)) {
           this.errorHandler.inputError();
