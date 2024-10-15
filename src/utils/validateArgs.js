@@ -38,9 +38,5 @@ export const validateArgs = (action, actionArgs) => {
     }
   }
 
-  console.error("=== action", action);
-  console.error("=== actionArgs", actionArgs);
-  console.error("=== isValid", isValid);
-
   return isValid;
 };

@@ -19,8 +19,6 @@ export class Engine {
 
   async handleAction(data) {
     const [action, ...actionArgs] = data.trim().split(" ");
-    console.log(">>>> action", action);
-    console.log(">>>> actionArgs", actionArgs);
 
     switch (action) {
       case ACTIONS.UP: {
@@ -232,7 +230,7 @@ export class Engine {
     try {
       await this.handleAction(data);
     } catch (err) {
-      console.error(err.message);
+      //   console.error(err.message);
       this.errorHandler.operationError();
       output(this.state.getDirNameInfo());
     }
