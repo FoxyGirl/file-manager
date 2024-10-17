@@ -1,7 +1,7 @@
 export const ACTIONS = {
   UP: "up",
   CD: "cd",
-  LIST: "list",
+  LIST: "ls",
   CAT: "cat",
   RM: "rm",
   ADD: "add",
