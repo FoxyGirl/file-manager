@@ -1,0 +1,15 @@
+export const ACTIONS = {
+  UP: "up",
+  CD: "cd",
+  LIST: "ls",
+  CAT: "cat",
+  RM: "rm",
+  ADD: "add",
+  RN: "rn",
+  CP: "cp",
+  MV: "mv",
+  OS: "os",
+  HASH: "hash",
+  COMPRESS: "compress",
+  DECOMPRESS: "decompress",
+};
