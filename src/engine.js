@@ -78,7 +78,10 @@ export class Engine {
           break;
         }
 
-        const [sourcePath, destinationPath] = actionArgs;
+        const [source, destination] = actionArgs;
+
+        const sourcePath = path.resolve(source);
+        const destinationPath = path.resolve(destination);
 
         await fs.access(sourcePath);
         // TEST: cp /home/foxygirl/zz.txt /home/foxygirl/workspace/
@@ -93,7 +96,10 @@ export class Engine {
           break;
         }
 
-        const [sourcePath, destinationPath] = actionArgs;
+        const [source, destination] = actionArgs;
+
+        const sourcePath = path.resolve(source);
+        const destinationPath = path.resolve(destination);
 
         await fs.access(sourcePath);
         // TEST: mv /home/foxygirl/zz.txt /home/foxygirl/workspace/
@@ -188,7 +194,10 @@ export class Engine {
           break;
         }
 
-        const [sourcePath, destinationPath] = actionArgs;
+        const [source, destination] = actionArgs;
+
+        const sourcePath = path.resolve(source);
+        const destinationPath = path.resolve(destination);
 
         await fs.access(sourcePath);
         // TODO: handle compress without destination file name
@@ -206,7 +215,10 @@ export class Engine {
           break;
         }
 
-        const [sourcePath, destinationPath] = actionArgs;
+        const [source, destination] = actionArgs;
+
+        const sourcePath = path.resolve(source);
+        const destinationPath = path.resolve(destination);
 
         await fs.access(sourcePath);
         // TODO: handle decompress without destination file name
